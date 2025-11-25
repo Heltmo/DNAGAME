@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural DNA Test 2025</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --accent-hot: #ff3366;
+            --accent-fire: #ff6b35;
+            --accent-gold: #ffd700;
+            --accent-electric: #00d4ff;
+            --accent-purple: #9b59b6;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 2px 0 var(--accent-hot), -2px 0 var(--accent-electric); }
+            25% { text-shadow: -2px 0 var(--accent-hot), 2px 0 var(--accent-electric); }
+            50% { text-shadow: 2px 2px var(--accent-hot), -2px -2px var(--accent-electric); }
+            75% { text-shadow: -2px 2px var(--accent-hot), 2px -2px var(--accent-electric); }
+        }
+
+        .title {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-hot), var(--accent-fire), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glitch 3s infinite;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .disclaimer {
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.15), rgba(255, 107, 53, 0.15));
+            border: 1px solid var(--accent-hot);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .disclaimer strong {
+            color: var(--accent-fire);
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .btn-start {
+            display: block;
+            width: 100%;
+            padding: 20px 40px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-hot), var(--accent-fire));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(255, 51, 102, 0.4);
+        }
+
+        .btn-start:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(255, 51, 102, 0.5);
+        }
+
+        .btn-start:active {
+            transform: translateY(0);
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-hot), var(--accent-fire), var(--accent-gold));
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .question-text {
+            font-size: clamp(1.2rem, 5vw, 1.6rem);
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .answer-btn {
+            padding: 18px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .answer-btn:hover {
+            background: rgba(255, 51, 102, 0.15);
+            border-color: var(--accent-hot);
+            transform: translateX(5px);
+        }
+
+        .answer-btn:active {
+            transform: scale(0.98);
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-fire));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #resultsChart {
+            max-width: 280px;
+            max-height: 280px;
+        }
+
+        .results-list {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .result-item {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .result-item:first-child {
+            padding-top: 0;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .result-percent {
+            font-size: 2rem;
+            font-weight: 900;
+            min-width: 100px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-fire));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-name {
+            font-weight: 800;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-roast {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            padding-left: 100px;
+            font-style: italic;
+        }
+
+        .wildcard-section {
+            background: linear-gradient(135deg, rgba(155, 89, 182, 0.2), rgba(0, 212, 255, 0.2));
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--accent-purple);
+        }
+
+        .wildcard-title {
+            font-size: 1rem;
+            color: var(--accent-electric);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .wildcard-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .wildcard-item:last-child {
+            border-bottom: none;
+        }
+
+        .wildcard-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .wildcard-percent {
+            font-weight: 800;
+            color: var(--accent-purple);
+            font-size: 1.2rem;
+        }
+
+        .wildcard-name {
+            font-weight: 700;
+            color: var(--accent-electric);
+        }
+
+        .wildcard-roast {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            padding-left: 50px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn-share {
+            padding: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-electric), var(--accent-purple));
+            color: white;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-share:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-retake {
+            padding: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-retake:hover {
+            border-color: var(--accent-hot);
+            color: var(--text-primary);
+        }
+
+        .watermark {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        #shareCanvas {
+            display: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-content img {
+            width: 100%;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--bg-card);
+            border-top-color: var(--accent-hot);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 500px) {
+            .result-roast {
+                padding-left: 0;
+                margin-top: 8px;
+            }
+            .result-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            .result-percent {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    
+    <div class="container">
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <h1 class="title">Cultural DNA Test </h1>
+            <p class="subtitle">Answer 10 questions and find out what you REALLY are.</p>
+            
+            
+            <button class="btn-start" onclick="startQuiz()">
+                🧬 Expose My DNA 🧬
+            </button>
+            
+            <p class="watermark">culturalDNA.test • For entertainment only</p>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="screen">
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span id="progressLabel">Question 1 of 10</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="question-card">
+                <p class="question-text" id="questionText"></p>
+                <div class="answers" id="answersContainer"></div>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="screen">
+            <div class="loading active">
+                <div class="loading-spinner"></div>
+                <p style="color: var(--accent-fire); font-size: 1.2rem;">Analyzing your cultural essence...</p>
+                <p style="color: var(--text-muted); margin-top: 10px;">Consulting the ancestors...</p>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="screen">
+            <div class="results-header">
+                <h2 class="results-title">🧬 Your Cultural DNA 🧬</h2>
+                <p style="color: var(--text-secondary);">The results are in. No refunds.</p>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="resultsChart"></canvas>
+            </div>
+            
+            <div class="results-list" id="resultsList"></div>
+            
+            <div class="wildcard-section" id="wildcardSection">
+                <h3 class="wildcard-title">🎲 Trace Amounts Detected</h3>
+                <div id="wildcardList"></div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn-share" onclick="generateMeme()">📸 Generate Meme Image</button>
+                <button class="btn-retake" onclick="retakeQuiz()">🔄 Retake Test</button>
+            </div>
+            
+            <p class="watermark">culturalDNA.test • Share your results • Offend your friends</p>
+        </div>
+    </div>
+
+    <!-- Modal for generated image -->
+    <div class="modal" id="imageModal">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div class="modal-content">
+            <img id="generatedImage" src="" alt="Your Cultural DNA Results">
+            <button class="btn-share" onclick="downloadImage()">💾 Save Image</button>
+            <p style="color: var(--text-muted); margin-top: 15px; font-size: 0.9rem;">Long press or right-click to save</p>
+        </div>
+    </div>
+
+    <canvas id="shareCanvas" width="1080" height="1080"></canvas>
+
+    <script>
+        // Questions - every answer gives points to multiple categories
+        const questions = [
+    {
+        question: "It's 2 AM. What are you eating?",
+        answers: [
+            { text: "A fistful of shredded cheese under fridge light like a raccoon on parole", points: { white: 5 } },
+            { text: "Leftover birria straight from the pot with a tortilla shield", points: { mexican: 5 } },
+            { text: "Cold jollof rice with a side of yesterday’s plantain and zero regrets", points: { black: 5 } },
+            { text: "Reheating dim sum in the microwave like a war criminal", points: { chinese: 5 } },
+            { text: "A full thali plate balanced on your chest while doomscrolling", points: { indian: 5 } },
+            { text: "Bagel with lox you swore was 'just a snack' at 1:58 AM", points: { jewish: 5 } },
+            { text: "Baklava you hid in the freezer labeled 'DO NOT TOUCH' in Sharpie", points: { arab: 5 } }
+        ]
+    },
+    {
+        question: "The thermostat is at 72°F. You:",
+        answers: [
+            { text: "72? That’s sauna mode. I’m opening every window and screaming", points: { white: 5 } },
+            { text: "Turn it to 68, put on a hoodie, and whisper 'bills don’t pay themselves'", points: { jewish: 5 } },
+            { text: "Crank it to 82 because 'I’m not paying to freeze in my own house!'", points: { black: 5 } },
+            { text: "78 minimum. Anything less and the ancestors get restless", points: { mexican: 5 } },
+            { text: "Off. Fan on. Windows sealed. Rice cooker provides ambient heat.", points: { chinese: 5 } },
+            { text: "80+ or I’m calling it a hate crime against my melanin", points: { indian: 5 } },
+            { text: "85. I sleep in a desert. My camel agrees.", points: { arab: 5 } }
+        ]
+    },
+    {
+        question: "Your relationship with spicy food:",
+        answers: [
+            { text: "Black pepper is a hate crime. I need a safe word.", points: { white: 5 } },
+            { text: "I put chamoy and Tajín on my ice cream and call it dessert", points: { mexican: 5 } },
+            { text: "If my tongue isn’t numb and my soul isn’t ascending, it’s not food", points: { indian: 5 } },
+            { text: "I add hot sauce to hot sauce. The bottle cries.", points: { black: 5 } },
+            { text: "Chili oil is my cologne. I smell like danger and dumplings.", points: { chinese: 5 } },
+            { text: "I haggle with the reaper using sriracha as currency", points: { arab: 5 } },
+            { text: "I put harissa on matzah and call it 'fusion Passover'", points: { jewish: 5 } }
+        ]
+    },
+    {
+        question: "Someone insults your mother. Your response:",
+        answers: [
+            { text: "Write a 47-slide PowerPoint and CC their entire bloodline", points: { jewish: 5 } },
+            { text: "Square up in the group chat with voice notes and receipts", points: { black: 5 } },
+            { text: "Call 37 cousins, a tía, and one uncle who’s 'connected'", points: { mexican: 5 } },
+            { text: "Curse them in 4 languages and invoice them for emotional damages", points: { indian: 5 } },
+            { text: "Silent treatment for 12 years. They’ll beg for forgiveness.", points: { chinese: 5 } },
+            { text: "Offer them tea, smile, then ruin their life by Tuesday", points: { arab: 5 } },
+            { text: "Apologize to *them* for making my mom upset", points: { white: 5 } }
+        ]
+    },
+    {
+        question: "Haggling at a store. You:",
+        answers: [
+            { text: "Pay full price and tip the cashier for emotional support", points: { white: 5 } },
+            { text: "Haggle so hard the manager cries and gives me store credit", points: { arab: 5 } },
+            { text: "I know a cousin who knows a guy who owes me a favor", points: { indian: 5 } },
+            { text: "Walk in with Tupperware and leave with a discount and leftovers", points: { chinese: 5 } },
+            { text: "Charm them into a deal while roasting their entire inventory", points: { black: 5 } },
+            { text: "Threaten to leave bad Yelp review in Yiddish", points: { jewish: 5 } },
+            { text: "Trade three tamales and a sob story for 40% off", points: { mexican: 5 } }
+        ]
+    },
+    {
+        question: "Sunday dinner is:",git add index.html
+
+        answers: [
+            { text: "Brunch at 2 PM with mimosas and emotional distance", points: { white: 5 } },
+            { text: "Non-negotiable. 47 people. One table. Three fights. Infinite love.", points: { mexican: 5 } },
+            { text: "Starts when the aunties arrive, ends when the cops do", points: { black: 5 } },
+            { text: "Every Sunday. Same time. Same seat. Same judgment.", points: { chinese: 5 } },
+            { text: "12 courses. 3 arguments about marriage. 1 uncle asleep in curry.", points: { indian: 5 } },
+            { text: "Bagels, lox, and passive-aggressive comments about your life choices", points: { jewish: 5 } },
+            { text: "Mansaf so big it needs its own zip code", points: { arab: 5 } }
+        ]
+    },
+    {
+        question: "Your relationship with the sun:",
+        answers: [
+            { text: "I burst into flames at the sight of natural light", points: { white: 5 } },
+            { text: "I absorb it like a solar panel made of melanin", points: { black: 5 } },
+            { text: "I tan strategically—like a general planning D-Day", points: { mexican: 5 } },
+            { text: "SPF 1000 and a personal parasol. The sun is canceled.", points: { chinese: 5 } },
+            { text: "I glow naturally. The sun works for *me*.", points: { indian: 5 } },
+            { text: "I negotiate with the sun for better rates on vitamin D", points: { jewish: 5 } },
+            { text: "I ride camels at noon just to flex", points: { arab: 5 } }
+        ]
+    },
+    {
+        question: "How do you express love?",
+        answers: [
+            { text: "A Post-it note that says 'ur ok I guess'", points: { white: 5 } },
+            { text: "Plate you down till you need a forklift to stand", points: { mexican: 5 } },
+            { text: "Roast you in the group chat then Venmo you $20", points: { black: 5 } },
+            { text: "Compare you to a cousin who went to Harvard", points: { chinese: 5 } },
+            { text: "Ask when you’re getting married. Every. Single. Day.", points: { indian: 5 } },
+            { text: "Guilt-trip you into eating more while calling you skinny", points: { jewish: 5 } },
+            { text: "Yell 'HABIBI EAT!' then cry when you finish the plate", points: { arab: 5 } }
+        ]
+    },
+    {
+        question: "Shoes in the house?",
+        answers: [
+            { text: "Yes. And I’ll fight anyone who says otherwise.", points: { white: 5 } },
+            { text: "Take them off or I’ll summon la chancla from orbit", points: { mexican: 5 } },
+            { text: "House slippers issued at the door like a 5-star prison", points: { chinese: 5 } },
+            { text: "You step on my mom’s hardwood? You step into the afterlife.", points: { black: 5 } },
+            { text: "Shoes off + foot washing station. Non-negotiable.", points: { indian: 5 } },
+            { text: "Slippers monogrammed. Yours are in the drawer labeled 'Guests Who Listen'", points: { jewish: 5 } },
+            { text: "Shoes off or I’ll make you drink cold tea", points: { arab: 5 } }
+        ]
+    },
+    {
+        question: "Phone call volume in public:",
+        answers: [
+            { text: "Whispering like I’m hiding from the CIA", points: { white: 5 } },
+            { text: "Speakerphone in the cereal aisle—'AUNTIE, CAN YOU HEAR ME NOW?'", points: { mexican: 5 } },
+            { text: "The whole bus knows my cousin’s baby daddy drama", points: { black: 5 } },
+            { text: "FaceTime with full K-drama reactions in the subway", points: { chinese: 5 } },
+            { text: "Arguing with mom about rishta profiles at full volume", points: { indian: 5 } },
+            { text: "Negotiating bar mitzvah DJ prices in the pharmacy line", points: { jewish: 5 } },
+            { text: "Entire family conference call—'WHO’S ON THE PHONE? PASS IT!'", points: { arab: 5 } }
+        ]
+    }
+];
+
+    // FULLY UNHINGED Roasts - now with Black & Jewish chaos
+const roasts = {
+    white: [
+        "You’ve tried to cancel a raccoon for eating your compost",
+        "Your idea of rebellion is buying off-brand mayo",
+        "You’ve worn socks with sandals to a job interview and got promoted",
+        "You’ve named your Roomba and left it in your will",
+        "You’ve called HR on a bird for ‘aggressive chirping’",
+        "You’ve tried to tip a self-checkout machine",
+        "You’ve apologized to Alexa for yelling at her"
+    ],
+    mexican: [
+        "Your abuelita once exorcised a microwave with holy water and cumin",
+        "You’ve been grounded by a glare from across three states",
+        "Your family reunion has its own zip code and a designated parking lot fight coordinator",
+        "You’ve used a tortilla as a phone case in an emergency",
+        "Your tía sells Avon, Tupperware, and allegedly cursed candles",
+        "You’ve been baptized in hot sauce at birth",
+        "Your mom’s chancla has frequent flyer miles"
+    ],
+    chinese: [
+        "Your mom keeps your childhood math trophies in a museum-grade display case",
+        "You’ve been disowned for 45 seconds for getting a B+ in gym",
+        "Your family group chat has a waiting list",
+        "You’ve eaten instant noodles with a PhD in physics watching over your shoulder",
+        "Your ancestors send you report cards from the afterlife",
+        "You’ve been told to finish your rice or the grains will cry",
+        "Your tiger mom has a tiger mom"
+    ],
+    indian: [
+        "Your auntie has a PhD in emotional espionage",
+        "You’ve been match-made with someone based on their LinkedIn profile picture",
+        "Your spice rack needs its own fire permit",
+        "You’ve attended a wedding where the cake was a 12-tier lie",
+        "Your parents have a ‘doctor or disappointment’ flowchart laminated",
+        "You’ve been fed so much during a 20-minute visit you need a wheelbarrow",
+        "Your family’s gossip travels faster than 5G"
+    ],
+    arab: [
+        "Your hospitality weaponizes baklava—refuse and you’re dead to the family",
+        "Your cousin owns a Lamborghini and a camel (the camel has Instagram)",
+        "You’ve haggled with a vending machine and won",
+        "Your family reunion has a live oud player and three blood feuds",
+        "You’ve been offered tea while the house was literally on fire",
+        "Your gold jewelry has structural integrity",
+        "Someone in your family tried to pay for your college with dates and sheer willpower"
+    ],
+    black: [
+        "Your auntie’s glare can stop a bullet mid-air",
+        "You’ve been to a cookout where the DJ played the same song 47 times and nobody complained",
+        "Your grandma’s sweet tea is 98% sugar and 100% classified as a weapon",
+        "You’ve been told ‘fix your face’ and immediately straightened up like a soldier",
+        "Your family reunion has a bounce house, a fish fry, and at least one uncle who’s ‘on the run’",
+        "You’ve used cocoa butter as currency in an emergency",
+        "Someone in your family still calls the remote ‘the clicker’ and will fight you about it"
+    ],
+    jewish: [
+        "Your bubbe has a black belt in guilt-fu and a PhD in passive-aggression",
+        "You’ve negotiated with a deli counter like it’s the Treaty of Versailles",
+        "Your family argues over who suffered *more* during a power outage",
+        "You’ve been to a bar mitzvah with a theme more extra than a Coachella VIP tent",
+        "Your mom keeps your baby teeth in a velvet pouch ‘for emergencies’",
+        "You’ve complained about free food while eating six bagels",
+        "Your therapist sends *you* a Hanukkah card every year"
+    ]
+};
+
+// WILDER wildcards - still unhinged
+const wildcards = [
+    { name: "Florida Man", roast: "You’ve suplexed an alligator while yelling ‘THIS IS MY SWAMP’" },
+    { name: "Cryptid", roast: "You’ve filed taxes as ‘Bigfoot - self-employed’" },
+    { name: "Time Traveler", roast: "You’ve spoiled your own surprise party in 2003" },
+    { name: "Doomsday Prepper", roast: "Your bunker has a Yelp page and a 4.8 rating" },
+    { name: "AI Overlord", roast: "You’ve unionized your smart fridge and lost" },
+    { name: "Professional Chaos Goblin", roast: "You’ve replaced your boss’s stapler with a live eel" },
+    { name: "Sentient Meme", roast: "You’ve gone viral in three dimensions simultaneously" }
+];
+
+        // State
+        let currentQuestion = 0;
+        let scores = {};
+        let chart = null;
+
+        function initScores() {
+            scores = {
+                white: 0, mexican: 0, chinese: 0, indian: 0,
+                jewish: 0, italian: 0, korean: 0, arab: 0, filipino: 0,
+                irish: 0, russian: 0, japanese: 0, polish: 0, nigerian: 0
+            };
+        }
+
+        function startQuiz() {
+            initScores();
+            currentQuestion = 0;
+            document.getElementById('startScreen').classList.remove('active');
+            document.getElementById('quizScreen').classList.add('active');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionText').textContent = q.question;
+            
+            const progress = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressLabel').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+            
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+            
+            // Shuffle answers
+            const shuffledAnswers = [...q.answers].sort(() => Math.random() - 0.5);
+            
+            shuffledAnswers.forEach((answer, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = answer.text;
+                btn.onclick = () => selectAnswer(q.answers.indexOf(answer));
+                container.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(answerIndex) {
+            const answer = questions[currentQuestion].answers[answerIndex];
+            
+            for (let category in answer.points) {
+                scores[category] = (scores[category] || 0) + answer.points[category];
+            }
+            
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showLoading();
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('quizScreen').classList.remove('active');
+            document.getElementById('loadingScreen').classList.add('active');
+            
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.remove('active');
+                showResults();
+            }, 2500);
+        }
+
+        function showResults() {
+            document.getElementById('resultsScreen').classList.add('active');
+            
+            // Get top 3 results
+            let sortedResults = Object.entries(scores)
+                .filter(([_, score]) => score > 0)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+            
+            // If less than 3, add random ones
+            while (sortedResults.length < 3) {
+                const remaining = Object.keys(scores).filter(k => !sortedResults.find(r => r[0] === k));
+                const random = remaining[Math.floor(Math.random() * remaining.length)];
+                sortedResults.push([random, Math.floor(Math.random() * 5) + 1]);
+            }
+            
+            // Assign percentages: roughly 60-75%, 15-25%, 5-15% for top 3
+            const basePercents = [
+                Math.floor(Math.random() * 16) + 60, // 60-75%
+                Math.floor(Math.random() * 11) + 15, // 15-25%
+                0 // Will be calculated
+            ];
+            basePercents[2] = Math.max(5, 95 - basePercents[0] - basePercents[1]);
+            
+            // Ensure they add to ~95%
+            const results = sortedResults.map(([name, _], i) => ({
+                name,
+                percent: basePercents[i],
+                roast: roasts[name][Math.floor(Math.random() * roasts[name].length)]
+            }));
+            
+            // Add 1-2 wildcards (remaining ~5%)
+            const remainingPercent = 100 - basePercents.reduce((a, b) => a + b, 0);
+            const numWildcards = Math.random() > 0.5 ? 2 : 1;
+            const shuffledWildcards = [...wildcards].sort(() => Math.random() - 0.5);
+            const selectedWildcards = shuffledWildcards.slice(0, numWildcards).map((w, i) => ({
+                ...w,
+                percent: numWildcards === 1 ? remainingPercent : (i === 0 ? Math.ceil(remainingPercent / 2) : Math.floor(remainingPercent / 2))
+            }));
+            
+            renderChart(results, selectedWildcards);
+            renderResultsList(results);
+            renderWildcards(selectedWildcards);
+            
+            window.finalResults = results;
+            window.finalWildcards = selectedWildcards;
+        }
+
+        function renderChart(results, wildcards) {
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            
+            if (chart) chart.destroy();
+            
+            const colors = ['#ff3366', '#ffd700', '#00d4ff', '#9b59b6', '#2ecc71'];
+            const allData = [...results, ...wildcards];
+            
+            chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: allData.map(r => r.name.charAt(0).toUpperCase() + r.name.slice(1)),
+                    datasets: [{
+                        data: allData.map(r => r.percent),
+                        backgroundColor: colors.slice(0, allData.length),
+                        borderColor: '#0a0a0f',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    cutout: '55%'
+                }
+            });
+        }
+
+        function renderResultsList(results) {
+            const container = document.getElementById('resultsList');
+            container.innerHTML = '';
+            
+            results.forEach(result => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `
+                    <div class="result-header">
+                        <div class="result-percent">${result.percent}%</div>
+                        <div class="result-name">${result.name}</div>
+                    </div>
+                    <div class="result-roast">"${result.roast}"</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderWildcards(wildcards) {
+            const container = document.getElementById('wildcardList');
+            container.innerHTML = '';
+            
+            wildcards.forEach(w => {
+                const item = document.createElement('div');
+                item.className = 'wildcard-item';
+                item.innerHTML = `
+                    <div class="wildcard-header">
+                        <div class="wildcard-percent">${w.percent}%</div>
+                        <div class="wildcard-name">${w.name}</div>
+                    </div>
+                    <div class="wildcard-roast">"${w.roast}"</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function generateMeme() {
+            const canvas = document.getElementById('shareCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, 1080);
+            gradient.addColorStop(0, '#0a0a0f');
+            gradient.addColorStop(0.5, '#1a1a25');
+            gradient.addColorStop(1, '#0a0a0f');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1080, 1080);
+            
+            // Decorative border
+            ctx.strokeStyle = '#ff3366';
+            ctx.lineWidth = 12;
+            ctx.strokeRect(30, 30, 1020, 1020);
+            
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(50, 50, 980, 980);
+            
+            // Title
+            ctx.fillStyle = '#ff3366';
+            ctx.font = 'bold 64px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('CULTURAL DNA TEST', 540, 120);
+            
+            ctx.fillStyle = '#ffd700';
+            ctx.font = 'bold 36px Arial, sans-serif';
+            ctx.fillText('🧬 2025 RESULTS 🧬', 540, 175);
+            
+            // Results
+            const results = window.finalResults;
+            const wildcards = window.finalWildcards;
+            
+            let yPos = 260;
+            
+            results.forEach((result, i) => {
+                // Background bar
+                const barWidth = (result.percent / 100) * 700;
+                ctx.fillStyle = i === 0 ? 'rgba(255, 51, 102, 0.3)' : i === 1 ? 'rgba(255, 215, 0, 0.3)' : 'rgba(0, 212, 255, 0.3)';
+                ctx.fillRect(100, yPos - 40, barWidth, 120);
+                
+                // Percentage
+                ctx.fillStyle = i === 0 ? '#ff3366' : i === 1 ? '#ffd700' : '#00d4ff';
+                ctx.font = 'bold 72px Arial, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(`${result.percent}%`, 120, yPos + 15);
+                
+                // Name
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 42px Arial, sans-serif';
+                ctx.fillText(result.name.toUpperCase(), 320, yPos + 10);
+                
+                // Roast
+                ctx.fillStyle = '#a0a0b0';
+                ctx.font = '24px Arial, sans-serif';
+                const roastText = result.roast.length > 50 ? result.roast.substring(0, 47) + '...' : result.roast;
+                ctx.fillText(`"${roastText}"`, 120, yPos + 60);
+                
+                yPos += 160;
+            });
+            
+            // Wildcards
+            yPos += 20;
+            ctx.fillStyle = '#9b59b6';
+            ctx.font = 'bold 28px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🎲 TRACE DNA DETECTED 🎲', 540, yPos);
+            
+            yPos += 50;
+            wildcards.forEach(w => {
+                ctx.fillStyle = '#00d4ff';
+                ctx.font = 'bold 32px Arial, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(`${w.percent}% ${w.name}`, 120, yPos);
+                
+                ctx.fillStyle = '#808090';
+                ctx.font = '22px Arial, sans-serif';
+                ctx.fillText(`"${w.roast}"`, 120, yPos + 35);
+                
+                yPos += 80;
+            });
+            
+            // Watermark
+            ctx.fillStyle = '#404050';
+            ctx.font = 'bold 24px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('culturalDNA.test • 100% satire • 0% science', 540, 1030);
+            
+            // Show modal
+            const dataUrl = canvas.toDataURL('image/png');
+            document.getElementById('generatedImage').src = dataUrl;
+            document.getElementById('imageModal').classList.add('active');
+        }
+
+        function downloadImage() {
+            const canvas = document.getElementById('shareCanvas');
+            const link = document.createElement('a');
+            link.download = 'my-cultural-dna-2025.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('active');
+        }
+
+        function retakeQuiz() {
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('startScreen').classList.add('active');
+        }
+
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
